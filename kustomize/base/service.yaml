@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: photoready
+  labels:
+    app: photoready
+spec:
+  ports:
+  - port: 8080
+    targetPort: 80
+  selector:
+    app: photoready
