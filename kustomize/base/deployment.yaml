@@ -16,16 +16,45 @@ spec:
     spec:
 
       initContainers:
-      - name: webcontent-copy
+      - name: copy
         image: photoready:latest
         imagePullPolicy: IfNotPresent
         command:
           - bash
           - -c
-          - "cp -r /var/www/* /dest/"
+          - "cp -r /var/www/* /dest/ && cp -r /flyway/jars/* /dest-flyway-jars"
         volumeMounts:
         - name: web-content
           mountPath: /dest
+        - name: lib-content
+          mountPath: /dest-flyway-jars
+
+      - name: flyway
+        image: flyway/flyway:8.0.3
+        imagePullPolicy: IfNotPresent
+        args:
+        - migrate
+        volumeMounts:
+        - name: flyway-conf
+          mountPath: /flyway/conf
+        - name: lib-content
+          mountPath: /flyway/jars
+        - name: flyway-sql
+          mountPath: /flyway/sql
+
+      - name: flyway-info
+        image: flyway/flyway:8.0.3
+        imagePullPolicy: IfNotPresent
+        args:
+        - info
+        volumeMounts:
+        - name: flyway-conf
+          mountPath: /flyway/conf
+        - name: lib-content
+          mountPath: /flyway/jars
+        - name: flyway-sql
+          mountPath: /flyway/sql
+
 
       containers:
       - name: photoready-fpm
@@ -53,6 +82,17 @@ spec:
       volumes:
       - name: web-content
         emptyDir: {}
+      - name: lib-content
+        emptyDir: {}
       - name: conf
         configMap:
           name: nginx-conf
+      - name: flyway-conf
+        configMap:
+          name: flyway-conf
+      - name: flyway-jars
+        configMap:
+          name: flyway-jars
+      - name: flyway-sql
+        configMap:
+          name: flyway-sql

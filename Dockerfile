@@ -11,6 +11,7 @@ COPY --from=composer /usr/local/bin/composer /usr/local/bin/composer
 
 RUN apt-get update
 
-COPY src/ /var/www/
+COPY src/public /var/www/public
+copy src/lib /flyway/jars
 
 WORKDIR /var/www
