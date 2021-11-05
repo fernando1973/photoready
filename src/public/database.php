@@ -11,7 +11,7 @@ try {
 	));
 
 	// Connecting, selecting database
-	$dbconn = pg_connect("host=patroni-pg11 dbname=postgres user=postgres password=zalando")
+	$dbconn = pg_connect("host=acid-photoready dbname=photoready user=photoready password=k3YAhKUWHi4TZtzfiv55PwPvwI2FPVfV8uSnIOSxwuUzmigERaMCaP5ZhJv550TR sslmode=require")
 	    or die('Could not connect: ' . pg_last_error());
 }
 catch (Exception $e) {

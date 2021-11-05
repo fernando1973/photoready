@@ -4,8 +4,15 @@ kind: Kustomization
 bases:
 - ../../base
 
+resources:
+- photoready-minimal.yaml
+
 replicas:
-- name: patroni-pg11
-  count: 1
 - name: redis-follower
   count: 0
+
+configMapGenerator:
+- name: flyway-conf
+  behavior: replace
+  files:
+    - flyway/conf/flyway.conf

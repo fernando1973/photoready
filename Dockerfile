@@ -1,17 +1,33 @@
-FROM php:8.0.2-fpm as composer
-
-RUN apt-get update
-
-# Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
 FROM php:8.0.2-fpm
 
-COPY --from=composer /usr/local/bin/composer /usr/local/bin/composer
+ARG APCU_VERSION=5.1.18
 
-RUN apt-get update
+LABEL Maintainer="Fernando Almeida <fernando.g.almeida@gmail.com>" \
+      Description="PHP and PostgreSQL."
 
+RUN apt-get update && apt install -y libpq-dev \
+ && docker-php-ext-install pgsql pdo pdo_pgsql
+
+# Copy existing app directory
 COPY src/public /var/www/public
-copy src/lib /flyway/jars
-
+COPY lib /flyway/jars
 WORKDIR /var/www
+
+# Configure non-root user.
+ARG PUID=1000
+ENV PUID ${PUID}
+ARG PGID=1000
+ENV PGID ${PGID}
+
+RUN groupmod -o -g ${PGID} www-data && \
+    usermod -o -u ${PUID} -g www-data www-data
+
+RUN chown -R www-data:www-data /var/www
+
+# Copy and run composer
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+#RUN composer install --no-interaction
+
+EXPOSE 8080
+
+CMD ["php-fpm"]
