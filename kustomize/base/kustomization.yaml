@@ -1,24 +1,23 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-bases:
-- ../components/redis
-- ../components/postgresql
 
 resources:
 - deployment.yaml
 - service.yaml
 - ingress.yaml
+- ../components/redis
+- ../components/postgresql
 
 configMapGenerator:
-  - name: nginx-conf
-    files:
-      - nginx.conf
-  - name: flyway-conf
-    files:
-      - flyway/conf/flyway.conf
-  - name: flyway-sql
-    files:
-      - flyway/sql/V1__Initial.sql
-      - flyway/sql/V2__Tables.sql
-      - flyway/sql/V3__PeopleData.sql
+- files:
+  - flyway/conf/flyway.conf
+  name: flyway-conf
+- files:
+  - flyway/sql/V1__Initial.sql
+  - flyway/sql/V2__Tables.sql
+  - flyway/sql/V3__PeopleData.sql
+  name: flyway-sql
+images:
+- name: fernandoalmeida/photoready
+  newTag: "1"

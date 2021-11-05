@@ -17,15 +17,13 @@ spec:
 
       initContainers:
       - name: copy
-        image: photoready:latest
+        image: photoready
         imagePullPolicy: IfNotPresent
         command:
           - bash
           - -c
-          - "cp -r /var/www/* /dest/ && cp -r /flyway/jars/* /dest-flyway-jars"
+          - "cp -r /flyway/jars/* /dest-flyway-jars"
         volumeMounts:
-        - name: web-content
-          mountPath: /dest
         - name: lib-content
           mountPath: /dest-flyway-jars
 
@@ -41,6 +39,12 @@ spec:
           mountPath: /flyway/jars
         - name: flyway-sql
           mountPath: /flyway/sql
+        env:
+        - name: FLYWAY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: photoready.acid-photoready.credentials.postgresql.acid.zalan.do 
+              key: password
 
       - name: flyway-info
         image: flyway/flyway:8.0.3
@@ -54,39 +58,33 @@ spec:
           mountPath: /flyway/jars
         - name: flyway-sql
           mountPath: /flyway/sql
-
+        env:
+        - name: FLYWAY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: photoready.acid-photoready.credentials.postgresql.acid.zalan.do 
+              key: password
 
       containers:
-      - name: photoready-fpm
-        image: photoready:latest
+      - name: photoready
+        image: photoready
         imagePullPolicy: IfNotPresent
         resources:
           requests:
             cpu: 10m
             memory: 100Mi
-
-      - name: photoready-nginx
-        image: nginx:1.19-alpine
-        imagePullPolicy: IfNotPresent
-        resources:
-          requests:
-            cpu: 10m
-            memory: 100Mi
+        env:
+        - name: FLYWAY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: photoready.acid-photoready.credentials.postgresql.acid.zalan.do 
+              key: password
         ports:
-        - containerPort: 80
-        volumeMounts:
-        - name: web-content
-          mountPath: /var/www
-        - name: conf
-          mountPath: /etc/nginx/conf.d
+          - containerPort: 80
+
       volumes:
-      - name: web-content
-        emptyDir: {}
       - name: lib-content
         emptyDir: {}
-      - name: conf
-        configMap:
-          name: nginx-conf
       - name: flyway-conf
         configMap:
           name: flyway-conf

@@ -11,7 +11,8 @@ try {
 	));
 
 	// Connecting, selecting database
-	$dbconn = pg_connect("host=acid-photoready dbname=photoready user=photoready password=k3YAhKUWHi4TZtzfiv55PwPvwI2FPVfV8uSnIOSxwuUzmigERaMCaP5ZhJv550TR sslmode=require")
+	$flyway_pass = $_ENV["FLYWAY_PASSWORD"];
+	$dbconn = pg_connect("host=acid-photoready dbname=photoready user=photoready password=$flyway_pass sslmode=require")
 	    or die('Could not connect: ' . pg_last_error());
 }
 catch (Exception $e) {

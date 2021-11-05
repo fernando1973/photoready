@@ -1,19 +1,20 @@
-FROM php:8.0.2-fpm
-
-ARG APCU_VERSION=5.1.18
+#FROM php:8.0.2-fpm
+FROM php:8.0.2-apache
 
 LABEL Maintainer="Fernando Almeida <fernando.g.almeida@gmail.com>" \
       Description="PHP and PostgreSQL."
 
-RUN apt-get update && apt install -y libpq-dev \
+# Install postgresql driver
+RUN apt-get update && apt install -y libpq-dev git zip \
  && docker-php-ext-install pgsql pdo pdo_pgsql
 
+# Copy and run composer
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+
 # Copy existing app directory
-COPY src/public /var/www/public
 COPY lib /flyway/jars
 WORKDIR /var/www
 
-# Configure non-root user.
 ARG PUID=1000
 ENV PUID ${PUID}
 ARG PGID=1000
@@ -22,12 +23,26 @@ ENV PGID ${PGID}
 RUN groupmod -o -g ${PGID} www-data && \
     usermod -o -u ${PUID} -g www-data www-data
 
-RUN chown -R www-data:www-data /var/www
+# Install composer dependencies
+COPY composer.* ./
+RUN composer install \
+    --ignore-platform-reqs \
+    --no-interaction \
+    --no-plugins \
+    --no-scripts \
+    --prefer-dist
 
-# Copy and run composer
-COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
-#RUN composer install --no-interaction
+# Add source code files to WORKDIR
+COPY . .
 
-EXPOSE 8080
+# Ensure file ownership for source code files
+RUN chown -R www-data:www-data .
 
-CMD ["php-fpm"]
+# Application port
+EXPOSE 80
+
+# Container start command
+#CMD ["php-fpm"]
+CMD ["apache2-foreground"]
+
+
