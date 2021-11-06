@@ -44,6 +44,8 @@ dev:
     - .git/
     - kustomize
     - lib
+    - vendor
+    - composer.lock
 
   # `dev.terminal` tells DevSpace to open a terminal as a last step during `devspace dev`
   terminal:
