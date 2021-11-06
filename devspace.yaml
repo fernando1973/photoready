@@ -76,8 +76,11 @@ profiles:
   # We generally recommend to use the base config without any profiles as optimized for development (e.g. image build+push is disabled)
 - name: production
 # This profile adds our image to the config so that DevSpace will build, tag and push our image before the deployment
-  merge:
-    images:
-      app:
-        image: ${IMAGE} # Use the value of our `${IMAGE}` variable here (see vars above)
-        dockerfile: ./Dockerfile
+  replace:
+    deployments:
+    - name: photoready
+      kubectl:
+        manifests:
+        - https://github.com/zalando/postgres-operator/manifests
+        - kustomize/overlays/gcp-prod
+        kustomize: true
