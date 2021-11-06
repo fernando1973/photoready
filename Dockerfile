@@ -13,7 +13,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 # Copy existing app directory
 COPY lib /flyway/jars
-WORKDIR /var/www
+WORKDIR /var/www/html
 
 ARG PUID=1000
 ENV PUID ${PUID}
@@ -23,17 +23,16 @@ ENV PGID ${PGID}
 RUN groupmod -o -g ${PGID} www-data && \
     usermod -o -u ${PUID} -g www-data www-data
 
+# Add source code files to WORKDIR
+COPY . .
+
 # Install composer dependencies
-COPY composer.* ./
 RUN composer install \
     --ignore-platform-reqs \
     --no-interaction \
     --no-plugins \
     --no-scripts \
     --prefer-dist
-
-# Add source code files to WORKDIR
-COPY . .
 
 # Ensure file ownership for source code files
 RUN chown -R www-data:www-data .

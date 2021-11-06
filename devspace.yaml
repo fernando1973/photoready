@@ -1,13 +1,13 @@
 version: v1beta11
 
 # `vars` specifies variables which may be used as ${VAR_NAME} in devspace.yaml
-#vars:
-#- name: IMAGE
-#  value: photoready
+vars:
+- name: IMAGE
+  value: fernandogalmeida/photoready
 
 images:
   photoready:
-    image: fernandogalmeida/photoready
+    image: ${IMAGE}
     build:
       custom:
         command: ./build.sh
@@ -16,6 +16,7 @@ deployments:
 - name: photoready
   kubectl:
     manifests:
+    - https://github.com/zalando/postgres-operator/manifests
     - kustomize/overlays/local
     kustomize: true
 
@@ -32,13 +33,17 @@ dev:
   # `dev.open` tells DevSpace to open certain URLs as soon as they return HTTP status 200
   # Since we configured port-forwarding, we can use a localhost address here to access our application
   open:
-  - url: http://172.24.116.225
+  - url: http://localhost:8080
 
   # `dev.sync` configures a file sync between our Pods in k8s and your local project files
   sync:
   - imageSelector: ${IMAGE} # Select the Pod that runs our `${IMAGE}`
+    localSubPath: .
+    containerPath: /var/www/html
     excludePaths:
     - .git/
+    - kustomize
+    - lib
 
   # `dev.terminal` tells DevSpace to open a terminal as a last step during `devspace dev`
   terminal:
@@ -55,7 +60,7 @@ dev:
   - imageSelector: ${IMAGE} # Select the Pod that runs our `${IMAGE}`
     # Since the `${IMAGE}` used to start our main application pod may be distroless or not have any dev tooling, let's replace it with a dev-optimized image
     # DevSpace provides a sample image here but you can use any image for your specific needs
-    replaceImage: loftsh/php:latest
+#    replaceImage: loftsh/php:latest
     # Besides replacing the container image, let's also apply some patches to the `spec` of our Pod
     # We are overwriting `command` + `args` for the first container in our selected Pod, so it starts with `sleep 9999999`
     # Using `sleep 9999999` as PID 1 (instead of the regular ENTRYPOINT), allows you to start the application manually

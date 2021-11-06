@@ -1,1 +1,13 @@
-{}
+{
+    "name": "fernandoalmeida/photoready",
+    "description": "Redis Postgresql php on k8s example",
+    "authors": [
+        {
+            "name": "Fernando Almeida",
+            "email": "fernando.g.almeida@gmail.com"
+        }
+    ],
+    "require": {
+        "predis/predis": "1.1.9"
+    }
+}
