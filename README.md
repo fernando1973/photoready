@@ -4,7 +4,7 @@ Postgresql and redis example.With this repository we try to show how we can use 
 * Kubernetes engine - Tested with [Rancher Desktop](https://www.suse.com/c/rancher_blog/rancher-desktop-an-open-source-app-for-desktop-kubernetes-and-container-management/) but it can be used [k3d](https://k3d.io/v5.0.3/) or minikube
 * [kustomize](https://kubectl.docs.kubernetes.io/installation/kustomize/binaries/)
 * Docker - If using Rancher Desktop it's not needed. Rancher Desktop install, [nerdctl](https://github.com/containerd/nerdctl)
-* DevSpace - Live development tool [Quickstart](https://github.com/loft-sh/devspace#quickstart)
+* [DevSpace](https://github.com/loft-sh/devspace#quickstart) - Live development tool 
 * Visual Studio Code - IDE (Optional)
 ## Build Service Image.
 Tested with Rancher Desktop
@@ -25,7 +25,7 @@ redis-leader-84b544548f-qzl5c        1/1     Running   0          33
 photoready-69649d64c9-gqjzq          1/1     Running   0          60s
 acid-photoready-0                    1/1     Running   0          32m
 ```
-### Creating port-forward to testing directly on the browser
+### Creating port-forward for tests
 ```bash
 $ devspace open
 ```

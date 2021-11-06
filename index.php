@@ -17,6 +17,13 @@ catch (Exception $e) {
 	die($e->getMessage());
 }
 
+echo "<!DOCTYPE html>\n";
+echo "<html>\n";
+echo "<head>\n";
+echo "<link rel='stylesheet' href='css/tables.css'>\n";
+echo "</head>\n";
+echo "<body>\n";
+
 if (!$redis->exists('persons')) {
 	echo "Getting from postgres</br></br>";
 
@@ -56,5 +63,8 @@ foreach ($persons as $person) {
     echo "\t</tr>\n";
 }
 echo "</table>\n";
+
+echo "</body>\n";
+echo "</html>\n";
 
 ?>
