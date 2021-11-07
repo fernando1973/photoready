@@ -9,3 +9,12 @@ composer.phar
 # Ignore DevSpace cache and log folder
 .devspace/
 .vscode
+terraform.tfstate
+tf/.kubeconfig
+tf/.terraform.lock.hcl
+tf/terraform.tfstate.backup
+tf/.terraform/providers/registry.terraform.io/hashicorp/local/2.1.0/linux_amd64/terraform-provider-local_v2.1.0_x5
+tf/.terraform/providers/registry.terraform.io/linode/linode/1.23.0/linux_amd64/terraform-provider-linode_v1.23.0
+tf/.terraform/providers/registry.terraform.io/linode/linode/1.23.0/linux_amd64/CHANGELOG.md
+tf/.terraform/providers/registry.terraform.io/linode/linode/1.23.0/linux_amd64/LICENSE
+tf/.terraform/providers/registry.terraform.io/linode/linode/1.23.0/linux_amd64/README.md

@@ -84,3 +84,13 @@ profiles:
         - https://github.com/zalando/postgres-operator/manifests
         - kustomize/overlays/gcp-prod
         kustomize: true
+- name: tests
+# This profile adds our image to the config so that DevSpace will build, tag and push our image before the deployment
+  replace:
+    deployments:
+    - name: photoready
+      kubectl:
+        manifests:
+        - https://github.com/zalando/postgres-operator/manifests
+        - kustomize/overlays/linode
+        kustomize: true

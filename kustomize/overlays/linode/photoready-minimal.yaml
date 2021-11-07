@@ -1,0 +1,20 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: acid-photoready
+spec:
+  teamId: "acid"
+  volume:
+    size: 100Gi
+  numberOfInstances: 1
+  users:
+    zalando:
+    - superuser
+    - createdb
+    photoready: []
+  databases:
+    photoready: photoready
+  preparedDatabases:
+    bar: {}
+  postgresql:
+    version: "14"

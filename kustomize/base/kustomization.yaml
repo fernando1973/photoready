@@ -21,4 +21,4 @@ configMapGenerator:
 images:
 - name: photoready
   newName: fernandogalmeida/photoready
-  newTag: wddaoJP
+  newTag: gVuKthI
