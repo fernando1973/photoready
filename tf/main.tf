@@ -44,3 +44,16 @@ resource "null_resource" "argocd_get_credencials" {
 
   ]
 }
+resource "null_resource" "argocd_applications" {
+  provisioner "local-exec" {
+    command = "kubectl --kubeconfig /tmp/.linodekubeconfig apply -n argocd -f applications.yaml"
+  }
+
+  depends_on = [
+    module.lke,
+    null_resource.argocd_ns,
+    null_resource.argocd_apply,
+    null_resource.argocd_wait
+
+  ]
+}
