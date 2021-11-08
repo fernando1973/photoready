@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: photoready
+  namespace: argocd
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: kustomize/overlays/linode
+    repoURL: https://github.com/fernando1973/photoready.git
+    targetRevision: HEAD
+  syncPolicy:
+    syncOptions:
+    - Validate=false
+    - PruneLast=true
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgresql
+  namespace: argocd
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: kustomize/components/postgresql
+    repoURL: https://github.com/fernando1973/photoready.git
+    targetRevision: HEAD
