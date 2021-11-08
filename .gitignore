@@ -18,3 +18,7 @@ tf/.terraform/providers/registry.terraform.io/linode/linode/1.23.0/linux_amd64/t
 tf/.terraform/providers/registry.terraform.io/linode/linode/1.23.0/linux_amd64/CHANGELOG.md
 tf/.terraform/providers/registry.terraform.io/linode/linode/1.23.0/linux_amd64/LICENSE
 tf/.terraform/providers/registry.terraform.io/linode/linode/1.23.0/linux_amd64/README.md
+tf/.terraform/providers/registry.terraform.io/hashicorp/kubernetes/2.6.1/linux_amd64/terraform-provider-kubernetes_v2.6.1_x5
+tf/.terraform/providers/registry.terraform.io/hashicorp/null/3.1.0/linux_amd64/terraform-provider-null_v3.1.0_x5
+tf/.terraform.tfstate.lock.info
+tf/.terraform/modules/modules.json
