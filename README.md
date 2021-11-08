@@ -59,3 +59,11 @@ photoready-6465488db7-qdhsg          1/1     Running   0          2
 acid-photoready-0                    1/1     Running   0          29m
 acid-photoready-1                    1/1     Running   0          119s
 ```
+# Linode Cloud Test Cluster
+Simple example of testing a kubernetes aplication in the cloud with argocd using terraform to provision the necessary resources.
+```bash
+$ export LINODE_TOKEN= . . . 
+$ cd tf
+$ terraform init
+$ terraform apply
+```
